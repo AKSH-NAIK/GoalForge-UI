@@ -23,7 +23,7 @@ export default function WeekCard({ week, index }) {
       <ul className="learn-list">
         {week.learn.map((item, i) => (
           <li key={i}>
-            {typeof item === "object" ? item.topic : item}
+            {typeof item === "object" ? (item.topic || item.title || item.concept || item.description || Object.values(item)[0]) : item}
           </li>
         ))}
       </ul>
@@ -47,7 +47,7 @@ export default function WeekCard({ week, index }) {
               }}
             />
             <span className="task-text">
-              {typeof task === "object" ? task.topic : task}
+              {typeof task === "object" ? (task.task || task.description || task.title || task.topic || Object.values(task)[0]) : task}
             </span>
           </li>
         ))}
@@ -55,7 +55,7 @@ export default function WeekCard({ week, index }) {
 
       {/* AI Guidance */}
       <div className="ai-guidance">
-        <div className="ai-guidance__header">🤖 AI Guidance</div>
+        <div className="ai-guidance__header"> AI Guidance</div>
 
         {/* Use AI */}
         {week.ai_help?.use_ai_for?.length > 0 && (
@@ -68,11 +68,10 @@ export default function WeekCard({ week, index }) {
             </ul>
           </div>
         )}
-
-        {/* ❗ NEW: Avoid AI */}
+        {/* Avoid AI FOR */}
         {week.ai_help?.avoid_ai_for?.length > 0 && (
           <div className="ai-guidance__section">
-            <div className="ai-guidance__label">⚠️ Avoid AI for</div>
+            <div className="ai-guidance__label">Avoid AI for</div>
             <ul className="ai-guidance__list">
               {week.ai_help.avoid_ai_for.map((item, i) => (
                 <li key={i}>{item}</li>
@@ -84,7 +83,7 @@ export default function WeekCard({ week, index }) {
         {/* Tips */}
         {week.ai_help?.tips?.length > 0 && (
           <div className="ai-guidance__section">
-            <div className="ai-guidance__label">💡 Tips</div>
+            <div className="ai-guidance__label"> Tips</div>
             <ul className="ai-guidance__list">
               {week.ai_help.tips.map((tip, i) => (
                 <li key={i}>{tip}</li>
@@ -96,7 +95,7 @@ export default function WeekCard({ week, index }) {
         {/* (Optional) Prompts */}
         {week.ai_help?.prompts?.length > 0 && (
           <div className="ai-guidance__section">
-            <div className="ai-guidance__label">🧠 Suggested Prompts</div>
+            <div className="ai-guidance__label"> Suggested Prompts</div>
             <ul className="ai-guidance__list">
               {week.ai_help.prompts.map((prompt, i) => (
                 <li key={i}>{prompt}</li>

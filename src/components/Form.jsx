@@ -19,7 +19,7 @@ export default function Form({ onSubmit, isLoading }) {
 
   return (
     <div className="form-card">
-      <h2 className="form-card__title"> Create Your Roadmap</h2>
+      <h2 className="form-card__title">Create Your Roadmap</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-grid">
           <div className="form-group">
@@ -68,7 +68,7 @@ export default function Form({ onSubmit, isLoading }) {
 
         <div className="form-actions">
           <button className="btn-primary" type="submit" disabled={isLoading}>
-            {isLoading ? "Generating…" : "⚡ Generate Plan"}
+            {isLoading ? "Generating…" : " Generate Plan"}
           </button>
         </div>
       </form>
