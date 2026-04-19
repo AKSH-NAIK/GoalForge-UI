@@ -19,21 +19,23 @@ export default function Form({ onSubmit, isLoading }) {
 
   return (
     <div className="form-card">
-      <h2 className="form-card__title">Create Your Roadmap</h2>
+      <h2 style={{ fontSize: '1.25rem', marginBottom: 'var(--space-xl)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <span style={{ color: 'var(--color-primary-light)' }}>✦</span> roadmap configuration
+      </h2>
       <form onSubmit={handleSubmit}>
         <div className="form-grid">
           <div className="form-group">
-            <label htmlFor="goal">Learning Goal</label>
+            <label htmlFor="goal">learning goal</label>
             <input
               id="goal"
-              placeholder="e.g. Learn React.js"
+              placeholder="e.g. master react.js"
               value={goal}
               onChange={(e) => setGoal(e.target.value)}
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="duration">Duration</label>
+            <label htmlFor="duration">duration</label>
             <input
               id="duration"
               placeholder="e.g. 4 weeks"
@@ -43,7 +45,7 @@ export default function Form({ onSubmit, isLoading }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="level">Skill Level</label>
+            <label htmlFor="level">skill level</label>
             <select
               id="level"
               value={level}
@@ -56,19 +58,23 @@ export default function Form({ onSubmit, isLoading }) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="knowledge">Existing Knowledge</label>
+            <label htmlFor="knowledge">existing knowledge</label>
             <input
               id="knowledge"
-              placeholder="e.g. HTML, CSS basics"
+              placeholder="e.g. html, css basics"
               value={knowledge}
               onChange={(e) => setKnowledge(e.target.value)}
             />
           </div>
         </div>
 
-        <div className="form-actions">
-          <button className="btn-primary" type="submit" disabled={isLoading}>
-            {isLoading ? "Generating…" : " Generate Plan"}
+        <div className="form-actions" style={{ marginTop: 'var(--space-xl)', display: 'flex', justifyContent: 'flex-end' }}>
+          <button className="btn-primary" type="submit" disabled={isLoading} style={{ minWidth: '180px' }}>
+            {isLoading ? (
+              <div className="spinner" style={{ width: '18px', height: '18px', borderWidth: '2px' }} />
+            ) : (
+              "forge roadmap"
+            )}
           </button>
         </div>
       </form>

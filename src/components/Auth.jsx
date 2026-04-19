@@ -67,106 +67,105 @@ export default function Auth() {
   };
 
   return (
-    <div className="auth-container">
-      {/* Background glow effects */}
-      <div className="auth-glow auth-glow--top"></div>
-      <div className="auth-glow auth-glow--bottom"></div>
-
-      <div className="auth-card">
-        <div className="auth-header">
-          <h1 className="header__title" style={{ fontSize: "2.2rem" }}>
-            Goal<span className="header__accent">Forge</span>
+    <div className="auth-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div className="auth-card section-glass" style={{ width: '100%', maxWidth: '440px' }}>
+        <div className="auth-header" style={{ textAlign: 'center', marginBottom: 'var(--space-xl)' }}>
+          <h1 className="text-gradient" style={{ fontSize: "2.5rem", marginBottom: 'var(--space-xs)' }}>
+            goalforge
           </h1>
-          <p className="auth-tagline">Build your future with structured AI roadmaps</p>
+          <p className="auth-tagline" style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>build your future with structured ai roadmaps</p>
         </div>
 
-        <div className="auth-tabs">
+        <div className="auth-tabs" style={{ display: 'flex', gap: 'var(--space-md)', marginBottom: 'var(--space-xl)', borderBottom: '1px solid var(--color-border)', paddingBottom: 'var(--space-md)' }}>
           <button
-            className={`auth-tab ${isLogin ? "auth-tab--active" : ""}`}
+            className={`auth-tab btn-ghost ${isLogin ? "auth-tab--active" : ""}`}
             onClick={() => setIsLogin(true)}
+            style={{ flex: 1, color: isLogin ? 'var(--color-primary-light)' : 'var(--color-text-dim)', borderBottom: isLogin ? '2px solid var(--color-primary-light)' : '2px solid transparent', borderRadius: 0 }}
           >
-            Login
+            login
           </button>
           <button
-            className={`auth-tab ${!isLogin ? "auth-tab--active" : ""}`}
+            className={`auth-tab btn-ghost ${!isLogin ? "auth-tab--active" : ""}`}
             onClick={() => setIsLogin(false)}
+            style={{ flex: 1, color: !isLogin ? 'var(--color-primary-light)' : 'var(--color-text-dim)', borderBottom: !isLogin ? '2px solid var(--color-primary-light)' : '2px solid transparent', borderRadius: 0 }}
           >
-            Sign Up
+            register
           </button>
         </div>
 
         {errorMsg && (
-          <div className="auth-error fade-in">
+          <div className="auth-error" style={{ padding: 'var(--space-md)', background: 'hsla(0, 80%, 60%, 0.1)', border: '1px solid hsla(0, 80%, 60%, 0.2)', color: '#ff8080', borderRadius: 'var(--radius-md)', marginBottom: 'var(--space-lg)', fontSize: '0.85rem' }}>
             {errorMsg}
           </div>
         )}
 
-        <form onSubmit={handleEmailAuth} className="auth-form fade-slide-up">
+        <form onSubmit={handleEmailAuth} className="auth-form" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-lg)' }}>
           <div className="form-group">
-            <label>Email</label>
+            <label>email address</label>
             <input
               type="email"
               placeholder="you@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="auth-input"
             />
           </div>
 
           <div className="form-group">
-            <label>Password</label>
+            <label>password</label>
             <input
               type="password"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="auth-input"
             />
           </div>
 
           {!isLogin && (
-            <div className="form-group fade-in">
-              <label>Confirm Password</label>
+            <div className="form-group" style={{ animation: 'fadeInUp 0.3s ease' }}>
+              <label>confirm password</label>
               <input
                 type="password"
                 placeholder="••••••••"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="auth-input"
               />
             </div>
           )}
 
           <button
             type="submit"
-            className="btn-primary auth-submit"
+            className="btn-primary"
             disabled={loading}
+            style={{ padding: '14px', marginTop: 'var(--space-md)' }}
           >
             {loading ? (
-              <span className="spinner-small" />
+              <div className="spinner" style={{ width: '20px', height: '20px', borderWidth: '2px' }} />
             ) : isLogin ? (
-              "Log In"
+              "log in to dashboard"
             ) : (
-              "Sign Up"
+              "create account"
             )}
           </button>
         </form>
 
-        <div className="auth-divider">
-          <span>OR</span>
+        <div className="auth-divider" style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)', margin: 'var(--space-xl) 0', color: 'var(--color-text-dim)', fontSize: '0.8rem' }}>
+          <div style={{ flex: 1, height: '1px', background: 'var(--color-border)' }} />
+          <span>secure connect</span>
+          <div style={{ flex: 1, height: '1px', background: 'var(--color-border)' }} />
         </div>
 
         <button
           onClick={handleGoogleLogin}
           type="button"
-          className="btn-google"
+          className="btn-secondary"
           disabled={loading}
+          style={{ width: '100%', padding: '12px' }}
         >
-          <img src="https://www.google.com/favicon.ico" alt="Google" className="google-icon" />
-          Continue with Google
+          <img src="https://www.google.com/favicon.ico" alt="Google" style={{ width: '18px', height: '18px' }} />
+          continue with google
         </button>
       </div>
     </div>
