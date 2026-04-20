@@ -72,27 +72,34 @@ export default function App() {
   };
 
   // SAVE OR UPDATE
+
   const saveRoadmap = async (roadmapData) => {
+    console.log("Updating ID:", roadmapId);
+    console.log("Sending to DB:", JSON.stringify(roadmapData.weeks[0].tasks, null, 2));
     const { data: { session } } = await supabase.auth.getSession();
     const user = session?.user;
 
     if (!user) return "No user";
 
-    // UPDATE if already exists
+    // UPDATE
     if (roadmapId) {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("roadmaps")
         .update({
           title: roadmapData.title,
           duration: roadmapData.duration,
           data: roadmapData
         })
-        .eq("id", roadmapId);
+        .eq("id", roadmapId)
+        .select()
+        .single();
+
+      console.log("Saved row from DB:", data?.data?.weeks?.[0]?.tasks);
 
       return error;
     }
 
-    // INSERT first time
+    // INSERT
     const { data, error } = await supabase
       .from("roadmaps")
       .insert([
@@ -114,11 +121,15 @@ export default function App() {
   };
 
   const handleSave = async () => {
+    console.log("Before Save:", roadmap.weeks[0].tasks);
     if (!roadmap || saving) return;
 
     setSaving(true);
 
-    const error = await saveRoadmap(roadmap);
+    // force fresh object to avoid stale reference
+    const cleanRoadmap = JSON.parse(JSON.stringify(roadmap));
+
+    const error = await saveRoadmap(cleanRoadmap);
 
     if (error) {
       showToast("Failed to save roadmap", "error");
@@ -139,7 +150,7 @@ export default function App() {
 
     if (formData) {
       setLastForm(formData);
-      setRoadmapId(null); // new roadmap
+      setRoadmapId(null);
     }
 
     try {
@@ -180,7 +191,7 @@ export default function App() {
     <div className="app-container">
       <nav className="navbar">
         <a href="/" className="nav-brand">goal<span>forge</span></a>
-        
+
         <div className="nav-actions">
           <button className="btn-ghost" onClick={() => setShowHistory(!showHistory)}>
             {showHistory ? "close history" : "view history"}
@@ -204,8 +215,9 @@ export default function App() {
       </div>
 
       {showHistory && (
-        <div className="section-glass" style={{ marginBottom: 'var(--space-xl)', animation: 'fadeInUp 0.4s ease' }}>
+        <div className="section-glass" style={{ marginBottom: 'var(--space-xl)' }}>
           <h3 style={{ marginBottom: 'var(--space-lg)', fontSize: '1.25rem' }}>past roadmaps</h3>
+
           <div className="history-grid">
             {history.length === 0 ? (
               <p style={{ color: 'var(--color-text-dim)', fontSize: '0.9rem' }}>no roadmaps found yet.</p>
@@ -216,13 +228,14 @@ export default function App() {
                   className="history-card"
                   onClick={() => {
                     setRoadmap(item.data);
+                    console.log("Loaded from DB:", item.data.weeks[0].tasks);
                     setRoadmapId(item.id);
                     setShowHistory(false);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                 >
                   <div className="history-card__title">{item.title}</div>
-                  <div className="history-card__duration" style={{ fontSize: '0.8rem', opacity: 0.6 }}>{item.duration}</div>
+                  <div className="history-card__duration">{item.duration}</div>
                 </div>
               ))
             )}
@@ -231,30 +244,23 @@ export default function App() {
       )}
 
       {loading && (
-        <div className="loading-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', margin: '4rem 0' }}>
+        <div className="loading-container">
           <div className="spinner" />
-          <p className="loading-text" style={{ color: 'var(--color-primary-light)', fontWeight: 600 }}>forging roadmap...</p>
+          <p className="loading-text">forging roadmap...</p>
         </div>
       )}
 
       {roadmap && !loading && (
-        <div style={{ animation: 'fadeInUp 0.6s ease' }}>
+        <div>
           <Roadmap roadmap={roadmap} setRoadmap={setRoadmap} />
-          
-          <div className="form-actions" style={{ 
-            marginTop: 'calc(var(--space-unit) * 12)', 
-            paddingTop: 'var(--space-xl)',
-            borderTop: '1px solid var(--color-border)',
-            display: 'flex',
-            justifyContent: 'center',
-            gap: 'var(--space-lg)'
-          }}>
-            <button className="btn-primary" onClick={handleSave} disabled={saving} style={{ minWidth: '200px' }}>
-              {saving ? "saving..." : "💾 save roadmap"}
+
+          <div className="form-actions">
+            <button className="btn-primary" onClick={handleSave} disabled={saving}>
+              {saving ? "saving..." : "save roadmap"}
             </button>
 
-            <button className="btn-secondary" onClick={() => handleGeneratePlan()} disabled={loading} style={{ minWidth: '200px' }}>
-              ✨ continue plan
+            <button className="btn-secondary" onClick={() => handleGeneratePlan()} disabled={loading}>
+              continue plan
             </button>
           </div>
         </div>
@@ -263,30 +269,10 @@ export default function App() {
       {toast && (
         <div className="toast-container">
           <div className={`toast ${toast.type === 'error' ? 'toast-error' : ''}`}>
-             {toast.type === 'error' ? '❌' : '✅'} {toast.message}
+            {toast.message}
           </div>
         </div>
       )}
-
-      {/* Scroll to top fab */}
-      <button 
-        className="btn-primary" 
-        style={{ 
-          position: 'fixed', 
-          bottom: 'var(--space-xl)', 
-          right: 'var(--space-xl)', 
-          width: '50px', 
-          height: '50px', 
-          borderRadius: '50%',
-          padding: 0,
-          opacity: roadmap ? 1 : 0, 
-          pointerEvents: roadmap ? 'auto' : 'none',
-          transition: 'all 0.3s ease'
-        }}
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-      >
-        ↑
-      </button>
     </div>
   );
 
