@@ -4,6 +4,7 @@ import { supabase } from "./lib/supabase";
 import Form from "./components/Form";
 import Roadmap from "./components/Roadmap";
 import Auth from "./components/Auth";
+import Landing from "./components/Landing";
 
 const API_URL = "https://goalforge-backend-production-6141.up.railway.app/api/generate-plan";
 
@@ -278,12 +279,13 @@ export default function App() {
 
   return (
     <Routes>
+      <Route path="/" element={<Landing />} />
       <Route
         path="/auth"
-        element={session ? <Navigate to="/" /> : <Auth />}
+        element={session ? <Navigate to="/app" /> : <Auth />}
       />
       <Route
-        path="/"
+        path="/app"
         element={session ? <MainApp /> : <Navigate to="/auth" />}
       />
     </Routes>

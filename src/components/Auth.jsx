@@ -51,7 +51,7 @@ export default function Auth() {
         });
         if (error) throw error;
         // On success, session state in App.jsx will trigger redirect
-        navigate("/");
+        navigate("/app");
       } else {
         if (password !== confirmPassword) {
           throw new Error("Passwords do not match");
