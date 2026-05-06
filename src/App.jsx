@@ -6,8 +6,7 @@ import Roadmap from "./components/Roadmap";
 import Auth from "./components/Auth";
 import Landing from "./components/Landing";
 
-const API_URL = "https://goalforge-backend-production-6141.up.railway.app/api/generate-plan";
-
+const API_URL = "https://goalforge-backend.onrender.com/api/generate-plan";
 export default function App() {
   const [session, setSession] = useState(null);
   const [sessionLoading, setSessionLoading] = useState(true);
