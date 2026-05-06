@@ -78,7 +78,8 @@ export default function Auth() {
   return (
     <div className="auth-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <div className="auth-card section-glass" style={{ width: '100%', maxWidth: '440px' }}>
-        <div className="auth-header" style={{ textAlign: 'center', marginBottom: 'var(--space-xl)' }}>
+        <div className="auth-header" style={{ textAlign: 'center', marginBottom: 'var(--space-xl)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <img src="/favicon.svg" alt="GoalForge Logo" className="nav-logo" style={{ width: '48px', height: '48px', marginBottom: 'var(--space-md)' }} />
           <h1 className="text-gradient" style={{ fontSize: "2.5rem", marginBottom: 'var(--space-xs)' }}>
             goalforge
           </h1>

@@ -190,7 +190,10 @@ export default function App() {
   const MainApp = () => (
     <div className="app-container">
       <nav className="navbar">
-        <a href="/" className="nav-brand">goal<span>forge</span></a>
+        <a href="/" className="nav-brand">
+          <img src="/favicon.svg" alt="GoalForge Logo" className="nav-logo" />
+          goal<span>forge</span>
+        </a>
 
         <div className="nav-actions">
           <button className="btn-ghost" onClick={() => setShowHistory(!showHistory)}>

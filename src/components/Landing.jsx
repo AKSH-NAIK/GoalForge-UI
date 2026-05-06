@@ -38,7 +38,10 @@ const Landing = () => {
         <div style={{ background: 'var(--color-bg)', minHeight: '100vh', color: 'var(--color-text)' }}>
             {/* Navbar */}
             <header className="navbar" style={{ maxWidth: '1100px', margin: '20px auto' }}>
-                <div className="nav-brand">goal<span>forge</span></div>
+                <div className="nav-brand">
+                    <img src="/favicon.svg" alt="GoalForge Logo" className="nav-logo" />
+                    goal<span>forge</span>
+                </div>
                 <div className="nav-actions">
                     <button className="btn-ghost" onClick={() => navigate('/auth')}>Sign In</button>
                     <button className="btn-primary" onClick={() => navigate('/auth')}>Get Started</button>
