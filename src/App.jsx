@@ -23,7 +23,6 @@ export default function App() {
   const [toast, setToast] = useState(null);
 
   const [lastForm, setLastForm] = useState(null);
-  const [showHistory, setShowHistory] = useState(false);
 
   const navigate = useNavigate();
 
@@ -196,8 +195,8 @@ export default function App() {
         </a>
 
         <div className="nav-actions">
-          <button className="btn-ghost" onClick={() => setShowHistory(!showHistory)}>
-            {showHistory ? "close history" : "view history"}
+          <button className="btn-ghost" onClick={() => navigate("/app/history")}>
+            view history
           </button>
           <button className="btn-secondary" onClick={handleLogout}>logout</button>
         </div>
@@ -216,35 +215,6 @@ export default function App() {
           isLoading={loading || saving}
         />
       </div>
-
-      {showHistory && (
-        <div className="section-glass" style={{ marginBottom: 'var(--space-xl)' }}>
-          <h3 style={{ marginBottom: 'var(--space-lg)', fontSize: '1.25rem' }}>past roadmaps</h3>
-
-          <div className="history-grid">
-            {history.length === 0 ? (
-              <p style={{ color: 'var(--color-text-dim)', fontSize: '0.9rem' }}>no roadmaps found yet.</p>
-            ) : (
-              history.map((item) => (
-                <div
-                  key={item.id}
-                  className="history-card"
-                  onClick={() => {
-                    setRoadmap(item.data);
-                    console.log("Loaded from DB:", item.data.weeks[0].tasks);
-                    setRoadmapId(item.id);
-                    setShowHistory(false);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                >
-                  <div className="history-card__title">{item.title}</div>
-                  <div className="history-card__duration">{item.duration}</div>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-      )}
 
       {loading && (
         <div className="loading-container">
@@ -279,6 +249,57 @@ export default function App() {
     </div>
   );
 
+  const HistoryView = () => (
+    <div className="app-container">
+      <nav className="navbar">
+        <a href="/" className="nav-brand">
+          <img src="/favicon.svg" alt="GoalForge Logo" className="nav-logo" />
+          goal<span>forge</span>
+        </a>
+
+        <div className="nav-actions">
+          <button className="btn-secondary" onClick={handleLogout}>logout</button>
+        </div>
+      </nav>
+
+      <main className="history-view">
+        <div className="history-view__header">
+          <div>
+            <h1 className="text-gradient">saved roadmaps</h1>
+            <p>pick up where you left off with one of your saved learning plans.</p>
+          </div>
+          <button className="btn-ghost" onClick={() => navigate("/app")}>
+            &larr; Back to Generator
+          </button>
+        </div>
+
+        <div className="section-glass">
+          <div className="history-grid">
+            {history.length === 0 ? (
+              <p style={{ color: 'var(--color-text-dim)', fontSize: '0.9rem' }}>no roadmaps found yet.</p>
+            ) : (
+              history.map((item) => (
+                <button
+                  key={item.id}
+                  className="history-card"
+                  onClick={() => {
+                    setRoadmap(item.data);
+                    setRoadmapId(item.id);
+                    navigate("/app");
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  <span className="history-card__title">{item.title}</span>
+                  <span className="history-card__duration">{item.duration}</span>
+                </button>
+              ))
+            )}
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+
   return (
     <Routes>
       <Route path="/" element={<Landing />} />
@@ -289,6 +310,10 @@ export default function App() {
       <Route
         path="/app"
         element={session ? <MainApp /> : <Navigate to="/auth" />}
+      />
+      <Route
+        path="/app/history"
+        element={session ? <HistoryView /> : <Navigate to="/auth" />}
       />
     </Routes>
   );
